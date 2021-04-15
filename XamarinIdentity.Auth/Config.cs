@@ -53,45 +53,41 @@ namespace XamarinIdentity.Auth
 
         public static IEnumerable<Client> GetClients(IConfigurationSection stsConfig)
         {
-            // TODO use configs in app
-            //var yourConfig = stsConfig["ClientUrl"];
-
             return new List<Client>
             {
-                // example code
-                //new Client
-                //{
-                //    ClientName = "angularclient",
-                //    ClientId = "angularclient",
-                //    AccessTokenType = AccessTokenType.Reference,
-                //    AccessTokenLifetime = 330,// 330 seconds, default 60 minutes
-                //    IdentityTokenLifetime = 30,
-                //    AllowedGrantTypes = GrantTypes.Implicit,
-                //    AllowAccessTokensViaBrowser = true,
-                //    RedirectUris = new List<string>
-                //    {
-                //        "https://localhost:44311",
-                //        "https://localhost:44311/silent-renew.html"
+                // mobile client
+                new Client
+                {
+                    ClientName = "mobileclient",
+                    ClientId = "mobileclient",
+                    // AccessTokenType = AccessTokenType.Jwt,
+                    // AccessTokenLifetime = 330,// 330 seconds, default 60 minutes
+                    // IdentityTokenLifetime = 30,
+                    AllowedGrantTypes = GrantTypes.Code,
+                    // AllowAccessTokensViaBrowser = true,
+                    AllowOfflineAccess = true, // allow refresh tokens
+                    RedirectUris = new List<string>
+                    {
+                        "com.mallibone.oidcsample/authorized"
 
-                //    },
-                //    PostLogoutRedirectUris = new List<string>
-                //    {
-                //        "https://localhost:44311/unauthorized",
-                //        "https://localhost:44311"
-                //    },
-                //    AllowedCorsOrigins = new List<string>
-                //    {
-                //        "https://localhost:44311",
-                //        "http://localhost:44311"
-                //    },
-                //    AllowedScopes = new List<string>
-                //    {
-                //        "openid",
-                //        "role",
-                //        "profile",
-                //        "email"
-                //    }
-                //}
+                    },
+                    PostLogoutRedirectUris = new List<string>
+                    {
+                        "com.mallibone.oidcsample/unauthorized",
+                    },
+                    // AllowedCorsOrigins = new List<string>
+                    // {
+                    //     "https://localhost:44311",
+                    //     "http://localhost:44311"
+                    // },
+                    AllowedScopes = new List<string>
+                    {
+                        "openid",
+                        "role",
+                        "profile",
+                        "email"
+                    }
+                }
             };
         }
     }

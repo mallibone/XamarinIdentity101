@@ -54,6 +54,9 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+    <None Update="usersdatabase.sqlite">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
    
    <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('node_modules') ">
