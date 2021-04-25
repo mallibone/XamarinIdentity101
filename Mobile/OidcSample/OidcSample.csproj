@@ -19,4 +19,11 @@
     <PackageReference Include="IdentityModel.OidcClient" Version="3.1.2" />
 
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
 </Project>

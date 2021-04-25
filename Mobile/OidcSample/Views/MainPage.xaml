@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:OidcSample.ViewModels;assembly=OidcSample"
+             Title="OIDC 101"
+             x:DataType="viewModels:MainViewModel"
+             x:Class="OidcSample.MainPage">
+    <ContentPage.BindingContext>
+        <viewModels:MainViewModel/>
+    </ContentPage.BindingContext>
+
+    <StackLayout>
+        <Label Text="Please Login"/>
+        <Button Text="Login" BackgroundColor="Blue" Command="{Binding ExecuteLogin}" />
+    </StackLayout>
+
+</ContentPage>

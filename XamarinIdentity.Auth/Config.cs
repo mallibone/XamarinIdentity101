@@ -59,7 +59,7 @@ namespace XamarinIdentity.Auth
                 new Client
                 {
                     ClientName = "mobileclient",
-                    ClientId = "mobileclient",
+                    ClientId = "gnabbermobileclient",
                     // AccessTokenType = AccessTokenType.Jwt,
                     // AccessTokenLifetime = 330,// 330 seconds, default 60 minutes
                     // IdentityTokenLifetime = 30,
