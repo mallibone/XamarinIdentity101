@@ -30,5 +30,13 @@ namespace OidcSample.iOS
 
             return base.FinishedLaunching(app, options);
         }
+        
+        public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options) =>
+            Xamarin.Essentials.Platform.OpenUrl(app, url, options) 
+            || base.OpenUrl(app, url, options);
+
+        public override bool ContinueUserActivity(UIApplication application, NSUserActivity userActivity, UIApplicationRestorationHandler completionHandler) =>
+            Xamarin.Essentials.Platform.ContinueUserActivity(application, userActivity, completionHandler) 
+            || base.ContinueUserActivity(application, userActivity, completionHandler);
     }
 }

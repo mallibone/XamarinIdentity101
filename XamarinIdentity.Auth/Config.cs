@@ -68,12 +68,12 @@ namespace XamarinIdentity.Auth
                     AllowOfflineAccess = true, // allow refresh tokens
                     RedirectUris = new List<string>
                     {
-                        "com.mallibone.oidcsample/authorized"
+                        "oidcxamarin101:/authenticated"
 
                     },
                     PostLogoutRedirectUris = new List<string>
                     {
-                        "com.mallibone.oidcsample/unauthorized",
+                        "oidcxamarin101:/unauthenticated",
                     },
                     // AllowedCorsOrigins = new List<string>
                     // {

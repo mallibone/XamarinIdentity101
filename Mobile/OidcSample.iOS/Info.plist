@@ -34,5 +34,20 @@
     <string>OidcSample</string>
     <key>XSAppIconAssets</key>
     <string>Assets.xcassets/AppIcon.appiconset</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLName</key>
+            <!-- The following string can be freely chosen -->
+            <string>authentication</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <!-- The following string has to match the callback scheme -->
+                <string>oidcxamarin101:/authenticated</string>
+            </array>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+        </dict>
+    </array>
 </dict>
 </plist>

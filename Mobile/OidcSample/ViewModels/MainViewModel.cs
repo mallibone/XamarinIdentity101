@@ -28,7 +28,7 @@ namespace OidcSample.ViewModels
 
         private async void Login()
         {
-            var oidcIdentityService = new OidcIdentityService("gnabbermobileclient", "oidcxamarin101:/authenticated", "profile offline", AuthorityUrl);
+            var oidcIdentityService = new OidcIdentityService("gnabbermobileclient", App.CallbackScheme, "profile offline", AuthorityUrl);
             var credentials = await oidcIdentityService.Authenticate();
             
             _httpClient.DefaultRequestHeaders.Authorization = credentials.IsError
