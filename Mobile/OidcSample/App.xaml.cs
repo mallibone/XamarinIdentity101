@@ -6,14 +6,14 @@ namespace OidcSample
 {
     public partial class App : Application
     {
-        oidcxamarin101:/authenticated
+        // oidcxamarin101:/authenticated
         public const string CallbackUri = "oidcxamarin101";
         public static readonly string CallbackScheme = $"{CallbackUri}:/authenticated";
         public App()
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new MainPage());
         }
 
         protected override void OnStart()

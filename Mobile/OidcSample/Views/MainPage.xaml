@@ -9,9 +9,45 @@
         <viewModels:MainViewModel/>
     </ContentPage.BindingContext>
 
-    <StackLayout>
-        <Label Text="Please Login"/>
-        <Button Text="Login" BackgroundColor="Blue" Command="{Binding ExecuteLogin}" />
-    </StackLayout>
+    <Grid>
+        <StackLayout VerticalOptions="Center" 
+				  IsVisible="{Binding IsNotLoggedIn}"
+		  Margin="32">
+            <Label Text="Please Login"
+				HorizontalOptions="Center" />
+            <Button Text="Login" 
+				BackgroundColor="MediumPurple" 
+				TextColor="White" 
+				Command="{Binding ExecuteLogin}" />
+        </StackLayout>
+        <StackLayout IsVisible="{Binding IsLoggedIn}" 
+                     Margin="0,32">
+            <Label Text="Logged in 🙂" FontSize="Title" />
+            <Label Text="{Binding TokenExpirationText}" />
+            <StackLayout Orientation="Horizontal" Spacing="8" Margin="8">
+                <Label Text="{Binding AccessTokenText}" 
+                       LineBreakMode="TailTruncation"
+                       MaxLines="3" />
+                <Button Text="Copy" 
+                        BackgroundColor="MediumPurple" 
+                        TextColor="White" 
+                        Command="{Binding ExecuteCopyAccessToken}" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" Spacing="8" Margin="8">
+                <Label Text="{Binding IdTokenText}"
+                       LineBreakMode="TailTruncation"
+                       MaxLines="3" />
+                <Button Text="Copy" 
+                        BackgroundColor="MediumPurple" 
+                        TextColor="White" 
+                        Command="{Binding ExecuteCopyIdentityToken}" />
+            </StackLayout>
+            <Button Text="Logout" 
+                    BackgroundColor="MediumPurple" 
+                    Margin="32,0"
+                    TextColor="White" 
+                    Command="{Binding ExecuteLogout}" />
+        </StackLayout>
+    </Grid>
 
 </ContentPage>

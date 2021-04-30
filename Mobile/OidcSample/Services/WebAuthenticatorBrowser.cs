@@ -11,12 +11,19 @@ namespace OidcSample.Services
 {
     internal class WebAuthenticatorBrowser : IBrowser
     {
+        private readonly string _callbackUrl;
+
+        public WebAuthenticatorBrowser(string? callbackUrl = null)
+        {
+            _callbackUrl = callbackUrl ?? "";
+        }
         public async Task<BrowserResult> InvokeAsync(BrowserOptions options, CancellationToken cancellationToken = default)
         {
             try
             {
+                var callbackUrl = string.IsNullOrEmpty(_callbackUrl) ? options.EndUrl : _callbackUrl;
                 WebAuthenticatorResult authResult =
-                    await WebAuthenticator.AuthenticateAsync(new Uri(options.StartUrl), new Uri(options.EndUrl));
+                    await WebAuthenticator.AuthenticateAsync(new Uri(options.StartUrl), new Uri(callbackUrl));
                 var authorizeResponse = ToRawIdentityUrl(options.EndUrl, authResult);
 
                 return new BrowserResult

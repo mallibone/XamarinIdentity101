@@ -66,6 +66,7 @@ namespace XamarinIdentity.Auth
                     AllowedGrantTypes = GrantTypes.Code,
                     // AllowAccessTokensViaBrowser = true,
                     AllowOfflineAccess = true, // allow refresh tokens
+                    RequireClientSecret = false,
                     RedirectUris = new List<string>
                     {
                         "oidcxamarin101:/authenticated"
@@ -73,7 +74,7 @@ namespace XamarinIdentity.Auth
                     },
                     PostLogoutRedirectUris = new List<string>
                     {
-                        "oidcxamarin101:/unauthenticated",
+                        "oidcxamarin101:/signout-callback-oidc",
                     },
                     // AllowedCorsOrigins = new List<string>
                     // {

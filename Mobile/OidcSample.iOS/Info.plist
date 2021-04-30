@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
+  <dict>
     <key>UIDeviceFamily</key>
     <array>
-        <integer>1</integer>
-        <integer>2</integer>
+      <integer>1</integer>
+      <integer>2</integer>
     </array>
     <key>UISupportedInterfaceOrientations</key>
     <array>
-        <string>UIInterfaceOrientationPortrait</string>
-        <string>UIInterfaceOrientationLandscapeLeft</string>
-        <string>UIInterfaceOrientationLandscapeRight</string>
+      <string>UIInterfaceOrientationPortrait</string>
+      <string>UIInterfaceOrientationLandscapeLeft</string>
+      <string>UIInterfaceOrientationLandscapeRight</string>
     </array>
     <key>UISupportedInterfaceOrientations~ipad</key>
     <array>
-        <string>UIInterfaceOrientationPortrait</string>
-        <string>UIInterfaceOrientationPortraitUpsideDown</string>
-        <string>UIInterfaceOrientationLandscapeLeft</string>
-        <string>UIInterfaceOrientationLandscapeRight</string>
+      <string>UIInterfaceOrientationPortrait</string>
+      <string>UIInterfaceOrientationPortraitUpsideDown</string>
+      <string>UIInterfaceOrientationLandscapeLeft</string>
+      <string>UIInterfaceOrientationLandscapeRight</string>
     </array>
     <key>MinimumOSVersion</key>
     <string>8.0</string>
@@ -36,18 +35,18 @@
     <string>Assets.xcassets/AppIcon.appiconset</string>
     <key>CFBundleURLTypes</key>
     <array>
-        <dict>
-            <key>CFBundleURLName</key>
-            <!-- The following string can be freely chosen -->
-            <string>authentication</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <!-- The following string has to match the callback scheme -->
-                <string>oidcxamarin101:/authenticated</string>
-            </array>
-            <key>CFBundleTypeRole</key>
-            <string>Editor</string>
-        </dict>
+      <dict>
+        <key>CFBundleURLName</key>
+        <string>authentication</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>oidcxamarin101:/authenticated</string>
+          <string>oidcxamarin101:/signout-callback-oidc</string>
+        </array>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+      </dict>
     </array>
-</dict>
+  </dict>
 </plist>
+
