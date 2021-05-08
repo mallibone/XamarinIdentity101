@@ -1,11 +1,13 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using IdentityModel.OidcClient;
+using IdentityModel.OidcClient.Results;
 using OidcSample.Annotations;
 using OidcSample.Services;
 using Xamarin.Essentials;
@@ -17,17 +19,18 @@ namespace OidcSample.ViewModels
     {
         private readonly HttpClient _httpClient = new HttpClient();
         private const string AuthorityUrl = "https://xamarinoidc-app.azurewebsites.net";
-        private LoginResult? _loginResult;
-        private readonly OidcIdentityService oidcIdentityService;
+        private Credentials? _credentials;
+        private readonly OidcIdentityService _oidcIdentityService;
 
         public MainViewModel()
         {
-            oidcIdentityService = new OidcIdentityService("gnabbermobileclient", App.CallbackScheme, "openid profile offline_access", AuthorityUrl);
+            _oidcIdentityService = new OidcIdentityService("gnabbermobileclient", App.CallbackScheme, "oidcxamarin101:/signout-callback-oidc", "openid profile offline_access", AuthorityUrl);
             ExecuteLogin = new Command(Login);
+            ExecuteRefresh = new Command(RefreshTokens);
             ExecuteLogout = new Command(async () =>
             {
-                await oidcIdentityService.Logout();
-                _loginResult = null;
+                await _oidcIdentityService.Logout();
+                _credentials = null;
                 OnPropertyChanged(nameof(TokenExpirationText));
                 OnPropertyChanged(nameof(AccessTokenText));
                 OnPropertyChanged(nameof(IdTokenText));
@@ -35,21 +38,56 @@ namespace OidcSample.ViewModels
                 OnPropertyChanged(nameof(IsNotLoggedIn));
             });
             ExecuteGetInfo = new Command(GetInfo);
-            ExecuteCopyAccessToken = new Command(async () => await Clipboard.SetTextAsync(_loginResult?.AccessToken));
-            ExecuteCopyIdentityToken = new Command(async () => await Clipboard.SetTextAsync(_loginResult?.IdentityToken));
+            ExecuteCopyAccessToken = new Command(async () => await Clipboard.SetTextAsync(_credentials?.AccessToken));
+            ExecuteCopyIdentityToken = new Command(async () => await Clipboard.SetTextAsync(_credentials?.IdentityToken));
+        }
+
+        public ICommand ExecuteLogin { get; }
+        public ICommand ExecuteRefresh { get; }
+        public ICommand ExecuteLogout { get; }
+        public ICommand ExecuteGetInfo { get; }
+        public ICommand ExecuteCopyAccessToken { get; }
+        public ICommand ExecuteCopyIdentityToken { get; }
+
+        public string TokenExpirationText => "Access Token expires at: " + _credentials?.AccessTokenExpiration;
+        public string AccessTokenText => "Access Token: " + _credentials?.AccessToken;
+        public string IdTokenText => "Id Token: " + _credentials?.IdentityToken;
+        public bool IsLoggedIn => _credentials != null;
+        public bool IsNotLoggedIn => _credentials == null;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private async void GetInfo()
         {
             var url = Path.Combine(AuthorityUrl, "manage", "index");
-            var theSecret = await _httpClient.GetAsync(url);
-            Debug.WriteLine(theSecret);
+            var response = await _httpClient.GetAsync(url);
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                if (string.IsNullOrEmpty(_credentials?.RefreshToken))
+                {
+                    // no valid refresh token exists => authenticate
+                    await _oidcIdentityService.Authenticate();
+                }
+                else
+                {
+                    // we have a valid refresh token => refresh tokens
+                    await _oidcIdentityService.RefreshToken(_credentials!.RefreshToken);
+                }
+            }
+
+            Debug.WriteLine(await response.Content.ReadAsStringAsync());
         }
 
         private async void Login()
         {
-            LoginResult credentials = await oidcIdentityService.Authenticate();
-            _loginResult = credentials;
+            Credentials credentials = await _oidcIdentityService.Authenticate();
+            _credentials = credentials;
             OnPropertyChanged(nameof(TokenExpirationText));
             OnPropertyChanged(nameof(AccessTokenText));
             OnPropertyChanged(nameof(IdTokenText));
@@ -61,24 +99,11 @@ namespace OidcSample.ViewModels
                 : new AuthenticationHeaderValue("bearer", credentials.AccessToken);
         }
 
-        public ICommand ExecuteLogin { get; }
-        public ICommand ExecuteLogout { get; }
-        public ICommand ExecuteGetInfo { get; }
-        public ICommand ExecuteCopyAccessToken { get; }
-        public ICommand ExecuteCopyIdentityToken { get; }
-
-        public string TokenExpirationText => "Access Token expires at: " + _loginResult?.AccessTokenExpiration;
-        public string AccessTokenText => "Access Token: " + _loginResult?.AccessToken;
-        public string IdTokenText => "Id Token: " + _loginResult?.IdentityToken;
-        public bool IsLoggedIn => _loginResult != null;
-        public bool IsNotLoggedIn => _loginResult == null;
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private async void RefreshTokens()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (_credentials?.RefreshToken == null) return;
+            Credentials credentials = await _oidcIdentityService.RefreshToken(_credentials.RefreshToken);
+            _credentials = credentials;
         }
     }
 }

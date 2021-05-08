@@ -10,65 +10,71 @@ namespace OidcSample.Services
         private readonly string _authorityUrl;
         private readonly string _clientId;
         private readonly string _redirectUrl;
+        private readonly string _postLogoutRedirectUrl;
         private readonly string _scope;
         private readonly string? _clientSecret;
 
-        public OidcIdentityService(string clientId, string redirectUrl, string scope, string authorityUrl, string? clientSecret = null)
+        public OidcIdentityService(string clientId, string redirectUrl, string postLogoutRedirectUrl, string scope, string authorityUrl, string? clientSecret = null)
         {
             _authorityUrl = authorityUrl;
             _clientId = clientId;
             _redirectUrl = redirectUrl;
+            _postLogoutRedirectUrl = postLogoutRedirectUrl;
             _scope = scope;
             _clientSecret = clientSecret;
         }
         
-        public async Task<LoginResult> Authenticate()
+        public async Task<Credentials> Authenticate()
         {
             try
             {
                 OidcClient oidcClient = CreateOidcClient();
                 LoginResult loginResult = await oidcClient.LoginAsync(new LoginRequest());
-                return loginResult;
+                return loginResult.ToCredentials();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                return new LoginResult(ex.ToString());
+                return new Credentials {Error = ex.ToString()};
             }
         }
 
         public async Task<LogoutResult> Logout()
         {
-                OidcClient oidcClient = CreateOidcClient("oidcxamarin101:/signout-callback-oidc");
+                // OidcClient oidcClient = CreateOidcClient("oidcxamarin101:/signout-callback-oidc");
+                OidcClient oidcClient = CreateOidcClient();
                 LogoutResult logoutResult = await oidcClient.LogoutAsync(new LogoutRequest());
                 return logoutResult;
         }
 
-        public async Task<RefreshTokenResult> RefreshToken(string refreshToken)
+        public async Task<Credentials> RefreshToken(string refreshToken)
         {
             try
             {
                 OidcClient oidcClient = CreateOidcClient();
                 RefreshTokenResult refreshTokenResult = await oidcClient.RefreshTokenAsync(refreshToken);
-                return refreshTokenResult;
+                return refreshTokenResult.ToCredentials();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                return new RefreshTokenResult {Error = ex.ToString()};
+                return new Credentials {Error = ex.ToString()};
             }
         }
 
-        private OidcClient CreateOidcClient(string? redirectUrl = null)
+        private OidcClient CreateOidcClient()
         {
             var options = new OidcClientOptions
             {
                 Authority = _authorityUrl,
                 ClientId = _clientId,
                 Scope = _scope,
-                RedirectUri = redirectUrl ?? _redirectUrl,
+                RedirectUri = _redirectUrl,
                 ClientSecret = _clientSecret,
-                Browser = redirectUrl == null ? new WebAuthenticatorBrowser() : new WebAuthenticatorBrowser(redirectUrl)
+                PostLogoutRedirectUri = _postLogoutRedirectUrl,
+                // ResponseMode = OidcClientOptions.AuthorizeResponseMode.Redirect,
+                // Browser = redirectUrl == null ? new WebAuthenticatorBrowser() : new WebAuthenticatorBrowser(redirectUrl)
+                Browser = new WebAuthenticatorBrowser()
             };
 
             var oidcClient = new OidcClient(options);

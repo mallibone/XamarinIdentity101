@@ -9,6 +9,6 @@ namespace XamarinIdentity.Auth.Models.AccountViewModels
         public static TimeSpan RememberMeLoginDuration = TimeSpan.FromDays(30);
 
         public static bool ShowLogoutPrompt = true;
-        public static bool AutomaticRedirectAfterSignOut = false;
+        public static bool AutomaticRedirectAfterSignOut = true;
     }
 }

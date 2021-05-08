@@ -237,7 +237,10 @@ namespace XamarinIdentity.Auth.Controllers
 
             await _persistedGrantService.RemoveAllGrantsAsync(subjectId, "angular2client");
 
-            return View("LoggedOut", vm);
+            return vm.AutomaticRedirectAfterSignOut &&
+                   !string.IsNullOrWhiteSpace(vm.PostLogoutRedirectUri)
+                ? (IActionResult) Redirect(vm.PostLogoutRedirectUri)
+                : View("LoggedOut", vm);
         }
 
         //

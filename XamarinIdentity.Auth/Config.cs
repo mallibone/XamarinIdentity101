@@ -66,6 +66,7 @@ namespace XamarinIdentity.Auth
                     AllowedGrantTypes = GrantTypes.Code,
                     // AllowAccessTokensViaBrowser = true,
                     AllowOfflineAccess = true, // allow refresh tokens
+                    AbsoluteRefreshTokenLifetime = 2592000, // in seconds ~> 30 days
                     RequireClientSecret = false,
                     RedirectUris = new List<string>
                     {
