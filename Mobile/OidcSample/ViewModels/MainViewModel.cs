@@ -87,12 +87,7 @@ namespace OidcSample.ViewModels
         private async void Login()
         {
             Credentials credentials = await _oidcIdentityService.Authenticate();
-            _credentials = credentials;
-            OnPropertyChanged(nameof(TokenExpirationText));
-            OnPropertyChanged(nameof(AccessTokenText));
-            OnPropertyChanged(nameof(IdTokenText));
-            OnPropertyChanged(nameof(IsLoggedIn));
-            OnPropertyChanged(nameof(IsNotLoggedIn));
+            UpdateCredentials(credentials);
 
             _httpClient.DefaultRequestHeaders.Authorization = credentials.IsError
                 ? null
@@ -103,7 +98,17 @@ namespace OidcSample.ViewModels
         {
             if (_credentials?.RefreshToken == null) return;
             Credentials credentials = await _oidcIdentityService.RefreshToken(_credentials.RefreshToken);
+            UpdateCredentials(credentials);
+        }
+
+        private void UpdateCredentials(Credentials credentials)
+        {
             _credentials = credentials;
+            OnPropertyChanged(nameof(TokenExpirationText));
+            OnPropertyChanged(nameof(AccessTokenText));
+            OnPropertyChanged(nameof(IdTokenText));
+            OnPropertyChanged(nameof(IsLoggedIn));
+            OnPropertyChanged(nameof(IsNotLoggedIn));
         }
     }
 }

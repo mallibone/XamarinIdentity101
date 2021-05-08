@@ -21,8 +21,11 @@
 				Command="{Binding ExecuteLogin}" />
         </StackLayout>
         <StackLayout IsVisible="{Binding IsLoggedIn}" 
+                     Spacing="12"
                      Margin="0,32">
-            <Label Text="Logged in 🙂" FontSize="Title" />
+            <Label Text="Logged in 🙂" 
+                   HorizontalOptions="Center"
+                   FontSize="Title" />
             <Label Text="{Binding TokenExpirationText}" />
             <StackLayout Orientation="Horizontal" Spacing="8" Margin="8">
                 <Label Text="{Binding AccessTokenText}" 
@@ -42,11 +45,16 @@
                         TextColor="White" 
                         Command="{Binding ExecuteCopyIdentityToken}" />
             </StackLayout>
-            <Button Text="Logout" 
+            <Button Text="Refresh Token" 
                     BackgroundColor="MediumPurple" 
                     Margin="32,0"
                     TextColor="White" 
-                    Command="{Binding ExecuteLogout}" />
+                    Command="{Binding ExecuteRefresh}" />
+            <!-- <Button Text="Logout"  -->
+            <!--         BackgroundColor="MediumPurple"  -->
+            <!--         Margin="32,0" -->
+            <!--         TextColor="White"  -->
+            <!--         Command="{Binding ExecuteLogout}" /> -->
         </StackLayout>
     </Grid>
 
