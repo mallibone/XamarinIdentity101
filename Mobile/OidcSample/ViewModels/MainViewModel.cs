@@ -6,8 +6,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using IdentityModel.OidcClient;
-using IdentityModel.OidcClient.Results;
 using OidcSample.Annotations;
 using OidcSample.Services;
 using Xamarin.Essentials;
@@ -24,19 +22,10 @@ namespace OidcSample.ViewModels
 
         public MainViewModel()
         {
-            _oidcIdentityService = new OidcIdentityService("gnabbermobileclient", App.CallbackScheme, "oidcxamarin101:/signout-callback-oidc", "openid profile offline_access", AuthorityUrl);
+            _oidcIdentityService = new OidcIdentityService("gnabbermobileclient", App.CallbackScheme, App.SignoutCallbackScheme, "openid profile offline_access", AuthorityUrl);
             ExecuteLogin = new Command(Login);
             ExecuteRefresh = new Command(RefreshTokens);
-            ExecuteLogout = new Command(async () =>
-            {
-                await _oidcIdentityService.Logout();
-                _credentials = null;
-                OnPropertyChanged(nameof(TokenExpirationText));
-                OnPropertyChanged(nameof(AccessTokenText));
-                OnPropertyChanged(nameof(IdTokenText));
-                OnPropertyChanged(nameof(IsLoggedIn));
-                OnPropertyChanged(nameof(IsNotLoggedIn));
-            });
+            ExecuteLogout = new Command(Logout);
             ExecuteGetInfo = new Command(GetInfo);
             ExecuteCopyAccessToken = new Command(async () => await Clipboard.SetTextAsync(_credentials?.AccessToken));
             ExecuteCopyIdentityToken = new Command(async () => await Clipboard.SetTextAsync(_credentials?.IdentityToken));
@@ -58,7 +47,7 @@ namespace OidcSample.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -99,6 +88,17 @@ namespace OidcSample.ViewModels
             if (_credentials?.RefreshToken == null) return;
             Credentials credentials = await _oidcIdentityService.RefreshToken(_credentials.RefreshToken);
             UpdateCredentials(credentials);
+        }
+
+        private async void Logout()
+        {
+            await _oidcIdentityService.Logout(_credentials?.IdentityToken);
+            _credentials = null;
+            OnPropertyChanged(nameof(TokenExpirationText));
+            OnPropertyChanged(nameof(AccessTokenText));
+            OnPropertyChanged(nameof(IdTokenText));
+            OnPropertyChanged(nameof(IsLoggedIn));
+            OnPropertyChanged(nameof(IsNotLoggedIn));
         }
 
         private void UpdateCredentials(Credentials credentials)

@@ -39,11 +39,10 @@ namespace OidcSample.Services
             }
         }
 
-        public async Task<LogoutResult> Logout()
+        public async Task<LogoutResult> Logout(string? identityToken)
         {
-                // OidcClient oidcClient = CreateOidcClient("oidcxamarin101:/signout-callback-oidc");
                 OidcClient oidcClient = CreateOidcClient();
-                LogoutResult logoutResult = await oidcClient.LogoutAsync(new LogoutRequest());
+                LogoutResult logoutResult = await oidcClient.LogoutAsync(new LogoutRequest{IdTokenHint = identityToken});
                 return logoutResult;
         }
 
@@ -72,8 +71,6 @@ namespace OidcSample.Services
                 RedirectUri = _redirectUrl,
                 ClientSecret = _clientSecret,
                 PostLogoutRedirectUri = _postLogoutRedirectUrl,
-                // ResponseMode = OidcClientOptions.AuthorizeResponseMode.Redirect,
-                // Browser = redirectUrl == null ? new WebAuthenticatorBrowser() : new WebAuthenticatorBrowser(redirectUrl)
                 Browser = new WebAuthenticatorBrowser()
             };
 

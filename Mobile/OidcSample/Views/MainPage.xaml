@@ -50,11 +50,11 @@
                     Margin="32,0"
                     TextColor="White" 
                     Command="{Binding ExecuteRefresh}" />
-            <!-- <Button Text="Logout"  -->
-            <!--         BackgroundColor="MediumPurple"  -->
-            <!--         Margin="32,0" -->
-            <!--         TextColor="White"  -->
-            <!--         Command="{Binding ExecuteLogout}" /> -->
+            <Button Text="Logout"
+                    BackgroundColor="MediumPurple"
+                    Margin="32,0"
+                    TextColor="White"
+                    Command="{Binding ExecuteLogout}" />
         </StackLayout>
     </Grid>
 
