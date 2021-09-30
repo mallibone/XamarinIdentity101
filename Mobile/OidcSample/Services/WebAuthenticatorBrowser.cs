@@ -17,6 +17,7 @@ namespace OidcSample.Services
         {
             _callbackUrl = callbackUrl ?? "";
         }
+
         public async Task<BrowserResult> InvokeAsync(BrowserOptions options, CancellationToken cancellationToken = default)
         {
             try
