@@ -1,61 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewModels="clr-namespace:OidcSample.ViewModels;assembly=OidcSample"
-             Title="OIDC 101"
-             x:DataType="viewModels:MainViewModel"
-             x:Class="OidcSample.MainPage">
-    <ContentPage.BindingContext>
-        <viewModels:MainViewModel/>
-    </ContentPage.BindingContext>
-
-    <Grid>
-        <StackLayout VerticalOptions="Center" 
-				  IsVisible="{Binding IsNotLoggedIn}"
-		  Margin="32">
-            <Label Text="Please Login"
-				HorizontalOptions="Center" />
-            <Button Text="Login" 
-				BackgroundColor="MediumPurple" 
-				TextColor="White" 
-				Command="{Binding ExecuteLogin}" />
-        </StackLayout>
-        <StackLayout IsVisible="{Binding IsLoggedIn}" 
-                     Spacing="12"
-                     Margin="0,32">
-            <Label Text="Logged in 🙂" 
-                   HorizontalOptions="Center"
-                   FontSize="Title" />
-            <Label Text="{Binding TokenExpirationText}" />
-            <StackLayout Orientation="Horizontal" Spacing="8" Margin="8">
-                <Label Text="{Binding AccessTokenText}" 
-                       LineBreakMode="TailTruncation"
-                       MaxLines="3" />
-                <Button Text="Copy" 
-                        BackgroundColor="MediumPurple" 
-                        TextColor="White" 
-                        Command="{Binding ExecuteCopyAccessToken}" />
-            </StackLayout>
-            <StackLayout Orientation="Horizontal" Spacing="8" Margin="8">
-                <Label Text="{Binding IdTokenText}"
-                       LineBreakMode="TailTruncation"
-                       MaxLines="3" />
-                <Button Text="Copy" 
-                        BackgroundColor="MediumPurple" 
-                        TextColor="White" 
-                        Command="{Binding ExecuteCopyIdentityToken}" />
-            </StackLayout>
-            <Button Text="Refresh Token" 
-                    BackgroundColor="MediumPurple" 
-                    Margin="32,0"
-                    TextColor="White" 
-                    Command="{Binding ExecuteRefresh}" />
-            <Button Text="Logout"
-                    BackgroundColor="MediumPurple"
-                    Margin="32,0"
-                    TextColor="White"
-                    Command="{Binding ExecuteLogout}" />
-        </StackLayout>
-    </Grid>
-
+             xmlns:identityServer="clr-namespace:OidcSample.IdentityServer;assembly=OidcSample"
+             xmlns:views="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:oidcAzure="clr-namespace:OidcSample.OidcAzure;assembly=OidcSample"
+             Title="Xamarin Auth 101"
+             x:Class="OidcSample.Views.MainPage">
+    <views:TabView TabStripPlacement="Bottom">
+        <views:TabViewItem Text="Identity Server">
+            <identityServer:OidcAuthView />
+        </views:TabViewItem>
+        <views:TabViewItem Text="Azure">
+            <oidcAzure:OidcAzureAuthView />
+        </views:TabViewItem>
+    </views:TabView>
 </ContentPage>

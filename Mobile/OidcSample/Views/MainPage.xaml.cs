@@ -1,7 +1,6 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
-namespace OidcSample
+namespace OidcSample.Views
 {
     public partial class MainPage : ContentPage
     {
