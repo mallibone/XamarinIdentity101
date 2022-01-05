@@ -2,10 +2,11 @@ using System;
 using System.Threading.Tasks;
 using IdentityModel.OidcClient;
 using IdentityModel.OidcClient.Results;
+using OidcSample.Services;
 
-namespace OidcSample.Services
+namespace OidcSample.OidcAzure
 {
-    public class OidcIdentityService
+    public class OidcAzureIdentityService
     {
         private readonly string _authorityUrl;
         private readonly string _clientId;
@@ -14,7 +15,7 @@ namespace OidcSample.Services
         private readonly string _scope;
         private readonly string? _clientSecret;
 
-        public OidcIdentityService(string clientId, string redirectUrl, string postLogoutRedirectUrl, string scope, string authorityUrl, string? clientSecret = null)
+        public OidcAzureIdentityService(string clientId, string redirectUrl, string postLogoutRedirectUrl, string scope, string authorityUrl, string? clientSecret = null)
         {
             _authorityUrl = authorityUrl;
             _clientId = clientId;
@@ -71,7 +72,8 @@ namespace OidcSample.Services
                 RedirectUri = _redirectUrl,
                 ClientSecret = _clientSecret,
                 PostLogoutRedirectUri = _postLogoutRedirectUrl,
-                Browser = new WebAuthenticatorBrowser()
+                Browser = new WebAuthenticatorBrowser(),
+                Policy = new Policy {Discovery = {ValidateIssuerName = false, ValidateEndpoints = false}}
             };
 
             var oidcClient = new OidcClient(options);

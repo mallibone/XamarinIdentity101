@@ -2,12 +2,59 @@
 
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:oidcAzure="clr-namespace:OidcSample.OidcAzure;assembly=OidcSample"
              x:Class="OidcSample.OidcAzure.OidcAzureAuthView">
+    <ContentPage.BindingContext>
+        <oidcAzure:AzureOidcViewModel/>
+    </ContentPage.BindingContext>
     <ContentView.Content>
-        <StackLayout>
-            <Label Text="Under construction"
-                   VerticalOptions="CenterAndExpand"
-                   HorizontalOptions="CenterAndExpand"/>
+    <Grid>
+        <StackLayout VerticalOptions="Center" 
+				  IsVisible="{Binding IsNotLoggedIn}"
+		  Margin="32">
+            <Label Text="Please Login"
+				HorizontalOptions="Center" />
+            <Button Text="Login" 
+				BackgroundColor="MediumPurple" 
+				TextColor="White" 
+				Command="{Binding ExecuteLogin}" />
         </StackLayout>
+        <StackLayout IsVisible="{Binding IsLoggedIn}" 
+                     Spacing="12"
+                     Margin="0,32">
+            <Label Text="Logged in 🙂" 
+                   HorizontalOptions="Center"
+                   FontSize="Title" />
+            <Label Text="{Binding TokenExpirationText}" />
+            <StackLayout Orientation="Horizontal" Spacing="8" Margin="8">
+                <Label Text="{Binding AccessTokenText}" 
+                       LineBreakMode="TailTruncation"
+                       MaxLines="3" />
+                <Button Text="Copy" 
+                        BackgroundColor="MediumPurple" 
+                        TextColor="White" 
+                        Command="{Binding ExecuteCopyAccessToken}" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" Spacing="8" Margin="8">
+                <Label Text="{Binding IdTokenText}"
+                       LineBreakMode="TailTruncation"
+                       MaxLines="3" />
+                <Button Text="Copy" 
+                        BackgroundColor="MediumPurple" 
+                        TextColor="White" 
+                        Command="{Binding ExecuteCopyIdentityToken}" />
+            </StackLayout>
+            <Button Text="Refresh Token" 
+                    BackgroundColor="MediumPurple" 
+                    Margin="32,0"
+                    TextColor="White" 
+                    Command="{Binding ExecuteRefresh}" />
+            <Button Text="Logout"
+                    BackgroundColor="MediumPurple"
+                    Margin="32,0"
+                    TextColor="White"
+                    Command="{Binding ExecuteLogout}" />
+        </StackLayout>
+    </Grid>
     </ContentView.Content>
 </ContentView>

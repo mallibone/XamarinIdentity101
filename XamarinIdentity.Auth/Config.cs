@@ -70,12 +70,12 @@ namespace XamarinIdentity.Auth
                     RequireClientSecret = false,
                     RedirectUris = new List<string>
                     {
-                        "oidcxamarin101:/authenticated"
+                        "oidcxamarin://authenticated"
 
                     },
                     PostLogoutRedirectUris = new List<string>
                     {
-                        "oidcxamarin101:/signout-callback-oidc",
+                        "oidcxamarin://signout-callback-oidc",
                     },
                     // AllowedCorsOrigins = new List<string>
                     // {

@@ -5,20 +5,21 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Windows.Input;
+using OidcSample.IdentityServer;
 using OidcSample.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-namespace OidcSample.IdentityServer
+namespace OidcSample.OidcAzure
 {
-    public class IdentityServerViewModel : INotifyPropertyChanged
+    public class AzureOidcViewModel : INotifyPropertyChanged
     {
         private readonly HttpClient _httpClient = new HttpClient();
         private const string AuthorityUrl = "https://xamarinoidc-app.azurewebsites.net";
         private Credentials? _credentials;
         private readonly OidcIdentityService _oidcIdentityService;
 
-        public IdentityServerViewModel()
+        public AzureOidcViewModel()
         {
             _oidcIdentityService = new OidcIdentityService("gnabbermobileclient", App.CallbackScheme, App.SignoutCallbackScheme, "openid profile offline_access", AuthorityUrl);
             ExecuteLogin = new Command(Login);

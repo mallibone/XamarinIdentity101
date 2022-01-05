@@ -1,16 +1,14 @@
-﻿using System;
-using OidcSample.Views;
+﻿using OidcSample.Views;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace OidcSample
 {
     public partial class App : Application
     {
         // oidcxamarin101:/authenticated
-        public const string CallbackUri = "oidcxamarin101";
-        public static readonly string CallbackScheme = $"{CallbackUri}:/authenticated";
-        public static readonly string SignoutCallbackScheme = $"{CallbackUri}:/signout-callback-oidc";
+        public const string CallbackUri = "oidcxamarin";
+        public static readonly string CallbackScheme = $"{CallbackUri}://authenticated";
+        public static readonly string SignoutCallbackScheme = $"{CallbackUri}://signout-callback-oidc";
         
         public App()
         {
