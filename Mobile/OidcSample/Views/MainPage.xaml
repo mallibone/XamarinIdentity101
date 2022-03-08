@@ -6,12 +6,6 @@
              xmlns:oidcAzure="clr-namespace:OidcSample.OidcAzure;assembly=OidcSample"
              Title="Xamarin Auth 101"
              x:Class="OidcSample.Views.MainPage">
-    <views:TabView TabStripPlacement="Bottom">
-        <views:TabViewItem Text="Identity Server">
             <identityServer:OidcAuthView />
-        </views:TabViewItem>
-        <views:TabViewItem Text="Azure">
-            <oidcAzure:OidcAzureAuthView />
-        </views:TabViewItem>
-    </views:TabView>
+    <!-- <oidcAzure:OidcAzureAuthView /> -->
 </ContentPage>

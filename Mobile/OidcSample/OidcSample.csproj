@@ -27,8 +27,4 @@
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModels" />
-  </ItemGroup>
 </Project>
