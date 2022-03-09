@@ -22,7 +22,9 @@ namespace OidcSample.ViewModels
 
         public MainViewModel()
         {
-            _oidcIdentityService = new OidcIdentityService("gnabbermobileclient", App.CallbackScheme, App.SignoutCallbackScheme, "openid profile offline_access", AuthorityUrl);
+            // const string scope = "openid profile offline_access";
+            const string scope = "openid profile";
+            _oidcIdentityService = new OidcIdentityService("gnabbermobileclient", App.CallbackScheme, App.SignoutCallbackScheme, scope, AuthorityUrl);
             ExecuteLogin = new Command(Login);
             ExecuteRefresh = new Command(RefreshTokens);
             ExecuteLogout = new Command(Logout);

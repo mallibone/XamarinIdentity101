@@ -24,7 +24,13 @@ namespace OidcSample.Services
             {
                 var callbackUrl = string.IsNullOrEmpty(_callbackUrl) ? options.EndUrl : _callbackUrl;
                 WebAuthenticatorResult authResult =
-                    await WebAuthenticator.AuthenticateAsync(new Uri(options.StartUrl), new Uri(callbackUrl));
+                    // await WebAuthenticator.AuthenticateAsync(new Uri(options.StartUrl), new Uri(callbackUrl));
+                    await WebAuthenticator.AuthenticateAsync(new WebAuthenticatorOptions
+                    {
+                        Url = new Uri(options.StartUrl),
+                        CallbackUrl = new Uri(callbackUrl),
+                        PrefersEphemeralWebBrowserSession = true
+                    });
                 var authorizeResponse = ToRawIdentityUrl(options.EndUrl, authResult);
 
                 return new BrowserResult
