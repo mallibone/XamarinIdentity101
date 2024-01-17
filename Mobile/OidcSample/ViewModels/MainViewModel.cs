@@ -22,9 +22,9 @@ namespace OidcSample.ViewModels
 
         public MainViewModel()
         {
-            // const string scope = "openid profile offline_access";
-            const string scope = "openid profile";
-            _oidcIdentityService = new OidcIdentityService("gnabbermobileclient", App.CallbackScheme, App.SignoutCallbackScheme, scope, AuthorityUrl);
+            const string scope = "openid profile offline_access";
+            // const string scope = "openid profile";
+            _oidcIdentityService = new OidcIdentityService("gnabbermobileclient", App.CallbackScheme, App.SignoutCallbackScheme, scope, AuthorityUrl, _httpClient);
             ExecuteLogin = new Command(Login);
             ExecuteRefresh = new Command(RefreshTokens);
             ExecuteLogout = new Command(Logout);
@@ -94,7 +94,9 @@ namespace OidcSample.ViewModels
 
         private async void Logout()
         {
-            await _oidcIdentityService.Logout(_credentials?.IdentityToken);
+            if (_credentials == null) return;
+            
+            await _oidcIdentityService.Logout(_credentials);
             _credentials = null;
             OnPropertyChanged(nameof(TokenExpirationText));
             OnPropertyChanged(nameof(AccessTokenText));
